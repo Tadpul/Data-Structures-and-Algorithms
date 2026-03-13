@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <stack>
 
 class Node
 {
@@ -107,22 +108,9 @@ public:
     }
 };
 
-int main()
+bool itemInCommon(std::vector<int> vector1, std::vector<int> vector2)
 {
-    HashTable myHT;
-
-    myHT.setNode("dildos", 10);
-    myHT.setNode("dildos", 2);
-    myHT.printHashTable();
-
-    for (std::string key : myHT.keys())
-    {
-        std::cout << key << " ";
-    }
-
     std::unordered_map<int, bool> cppHT;
-    std::vector<int> vector1 = {1, 2, 3};
-    std::vector<int> vector2 = {4, 5, 1};
 
     for (int number : vector1)
     {
@@ -132,6 +120,108 @@ int main()
     for (int number: vector2)
     {
         if (cppHT[number]) std::cout << "these 2 lists share a value\n";  
+        return true;
+    }
+    return false;
+}
+
+std::vector<int> findDuplicates(const std::vector<int>& numVector)
+{
+    std::unordered_map<int, bool> numHT;
+    std::vector<int> dupVector;
+
+    for (int num : numVector)
+    {
+        if (numHT.find(num) != numHT.end())
+        {
+            dupVector.push_back(num);
+            std::cout << num << " has been added to duplicate list\n";
+        }
+        else
+        {
+            numHT.insert({num, true});
+        }
+    }
+    return dupVector;
+}
+
+char firstNonRepeatingChar(const std::string& input_string)
+{
+    std::unordered_map<char, int> charCounter;
+    for (char letter : input_string) { charCounter[letter]++; }
+    for (const auto& iterator : charCounter)
+    {
+        std::cout << iterator.first << ", " << iterator.second << '\n';
+    }
+    
+    for (char letter : input_string)
+    {
+        if (charCounter[letter] == 1) return letter;
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const std::vector<int>& vect)
+{
+    std::cout << "{ ";
+    for (int num : vect) { std::cout << num << ' '; }
+    std::cout << "}\n";
+    return os;
+}
+
+std::vector<std::vector<std::string>> groupAnagrams(const std::vector<std::string>& strings)
+{
+    std::unordered_map<std::string, std::vector<std::string>> anagramMap;
+    // orders string and adds it to the anagram, then adds the unordered aspect to the ordered string
+    for (std::string string : strings)
+    {
+        std::string orderedString{ "" };
+        std::stack<char> unorderedStack;
+        std::stack<char> tempStack;
+
+        // adds the unordered letters to unordered stack
+        for (char letter : string) { unorderedStack.push(letter); }
+
+        // reorders the leltters in the temporary stack
+        while (!unorderedStack.empty())
+        {
+            char temp;
+            temp = unorderedStack.top();
+            unorderedStack.pop();
+
+            while (!tempStack.empty() && tempStack.top() > temp)
+            {
+                unorderedStack.push(tempStack.top());
+                tempStack.pop();
+            }
+            tempStack.push(temp);
+        }
+
+        // moves ordered letters from the ordered stack to the ordered string 
+        while (!tempStack.empty())
+        {
+            orderedString += tempStack.top();
+            tempStack.pop();
+        }
+
+        // adds the unordered string to the ordered string as a vector.
+        anagramMap[orderedString].push_back(string);
     }
 
+    std::vector<std::vector<std::string>> anagramVector;
+    for (const auto& node : anagramMap)
+    {
+        anagramVector.push_back(node.second);
+        for (const std::string word : node.second)
+        {
+            std::cout << word << ' ';
+        }
+        std::cout << '\n';
+    }
+    return anagramVector;
+}
+
+int main()
+{
+    std::vector<std::string> anagram = {"eat", "tea", "tan", "ate", "nat", "bat"};
+    groupAnagrams(anagram);
 }
