@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 class Node
 {
@@ -118,4 +119,19 @@ int main()
     {
         std::cout << key << " ";
     }
+
+    std::unordered_map<int, bool> cppHT;
+    std::vector<int> vector1 = {1, 2, 3};
+    std::vector<int> vector2 = {4, 5, 1};
+
+    for (int number : vector1)
+    {
+        cppHT.insert({number, true});
+    }
+
+    for (int number: vector2)
+    {
+        if (cppHT[number]) std::cout << "these 2 lists share a value\n";  
+    }
+
 }
