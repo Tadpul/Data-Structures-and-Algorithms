@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include <stack>
+#include <unordered_set>
 
 class Node
 {
@@ -220,8 +221,79 @@ std::vector<std::vector<std::string>> groupAnagrams(const std::vector<std::strin
     return anagramVector;
 }
 
+std::vector<int> twoSum(const std::vector<int>& numbers, int target) 
+{
+    std::unordered_map<int, int> targetMap;
+
+    for (int i{ 0 }; i < numbers.size(); i++)
+    {
+        int thisNumber = numbers[i];
+        int complement = target - thisNumber;
+
+        if (targetMap.find(complement) != targetMap.end())
+        {
+            return {targetMap[complement], i};
+        }
+        targetMap[thisNumber] = i;
+    }
+    return {};
+}
+
+std::vector<int> subarraySum(std::vector<int> nums, int target)
+/*
+{
+    int currentSum{ nums[0] };
+
+    int start{ 0 };
+    int end{ 0 };
+
+    while (currentSum != target && end < nums.size())
+    {
+        if (currentSum < target) 
+        {
+            end++;
+            if (end < nums.size()) currentSum += nums[end];
+        }
+        else
+        {
+            currentSum -= nums[start];
+            start++;  
+        }
+    }
+
+    std::cout << nums[start] << nums[end] << currentSum << '\n';
+    if (currentSum == target) { return {start, end}; }
+    return {};
+}
+*/
+{
+    std::unordered_map<int, int> sumMap;
+    int currentSum{ 0 };
+
+    sumMap[0] = -1;
+
+    for (std::size_t i{ 0 }; i < nums.size(); i++)
+    {
+        currentSum += nums[i];
+        int complement = currentSum - target;
+
+        if (sumMap.find(complement) != sumMap.end())
+        {
+            return {sumMap[complement] + 1, (int)i};
+        }
+        sumMap[currentSum] = (int)i;
+    }
+    return {};
+}
+
+std::vector<int> removeDuplicates(const std::vector<int>& myList)
+{
+    std::unordered_set<int> set{ myList.begin(), myList.end() };
+    std::vector<int> returnVector{ set.begin(), set.end() };
+    return returnVector;
+}
+
 int main()
 {
-    std::vector<std::string> anagram = {"eat", "tea", "tan", "ate", "nat", "bat"};
-    groupAnagrams(anagram);
+    std::cout << removeDuplicates({3, 3, 4, 2, 5});
 }
