@@ -28,15 +28,12 @@ public:
 
     ~Queue()
     {
-        Node* temp{ nullptr };
-        Node* tempAfter{ first };
-        first = nullptr;
+        Node* temp;
 
-        while (tempAfter)
+        while (first)
         {
-            temp = tempAfter;
-            tempAfter = temp->next;
-
+            temp = first;
+            first = temp->next;
             delete temp;
         }
     }
@@ -95,9 +92,5 @@ public:
 
 int main()
 {
-    Queue myQueue{ 1 };
-    myQueue.enqueue(4);
-    myQueue.printQueue();
-    myQueue.dequeue();
-    myQueue.printQueue();
+
 }

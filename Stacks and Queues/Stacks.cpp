@@ -102,11 +102,5 @@ std::ostream& operator<<(std::ostream& os, Stack& stackType)
 
 int main()
 {
-    Stack unorderedStack{3};
-    unorderedStack.push(4);
-    unorderedStack.push(2);
-    unorderedStack.push(1);
-    sortStack(unorderedStack);
-
-    std::cout << unorderedStack << '\n';
+    
 }

@@ -293,7 +293,41 @@ std::vector<int> removeDuplicates(const std::vector<int>& myList)
     return returnVector;
 }
 
+std::vector<std::vector<int>> findPairs(const std::vector<int>& arr1, const std::vector<int>& arr2, int target) 
+{
+    std::vector<std::vector<int>> pairVector;
+    std::unordered_set<int> set1{ arr1.begin(), arr1.end() };
+    for (int number : arr2)
+    {
+        int complement{ target - number };
+        if (set1.find(complement) != set1.end()) pairVector.push_back({number, complement});
+    }
+    return pairVector;
+}
+
+int longestConsecutiveSequence(const std::vector<int>& nums)
+{
+    int longest{ 0 };
+    std::unordered_set<int> numSet{ nums.begin(), nums.end() };
+    
+    for (int number : numSet)
+    {
+        if (numSet.find(number - 1) == numSet.end())
+        {
+            int currentLongest{ 0 };
+            int newNumber{ number };
+            while (numSet.find(newNumber) != numSet.end())
+            {
+                newNumber++;
+                currentLongest++;
+            }
+            if (currentLongest > longest) longest = currentLongest;
+        }
+    }
+    return longest;
+}
+
 int main()
 {
-    std::cout << removeDuplicates({3, 3, 4, 2, 5});
+
 }

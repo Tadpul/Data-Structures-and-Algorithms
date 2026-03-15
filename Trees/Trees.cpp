@@ -72,10 +72,5 @@ public:
 
 int main()
 {
-    Tree* myTree;
-    myTree->insert(2);
-    myTree->insert(3);
-
-    std::cout << myTree->root->right->value << '\n';
-    std::cout << myTree->contains(1) << '\n';
+    
 }

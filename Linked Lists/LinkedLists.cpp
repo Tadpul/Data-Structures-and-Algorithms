@@ -441,10 +441,5 @@ public:
 
 int main()
 {
-	LinkedList* myLinkedList{ new LinkedList(1) };
-	myLinkedList->append(2);
-	myLinkedList->append(3);
-
-	myLinkedList->swapPairs();
-	myLinkedList->printList();
+	
 }

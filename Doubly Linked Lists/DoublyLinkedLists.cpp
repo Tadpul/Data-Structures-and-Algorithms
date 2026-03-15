@@ -26,6 +26,17 @@ public:
 		tail = defaultNode;
 	}
 
+	~DoubleLinkedList()
+	{
+		Node* temp;
+		while (head)
+		{
+			temp = head;
+			head = head->next;
+			delete temp;
+		}
+	}
+
 	void append(int value)
 	{
 		Node* newNode{ new Node(value) };
@@ -422,15 +433,5 @@ public:
 
 int main()
 {
-	DoubleLinkedList* myDLL{ new DoubleLinkedList(1) };
-	myDLL->append(2);
-	myDLL->append(3);
-	myDLL->append(4);
-	myDLL->append(5);
-	myDLL->append(6);
-	myDLL->append(7);
-	myDLL->append(8);
 
-	myDLL->swapPairs();
-	myDLL->printList();
 }
