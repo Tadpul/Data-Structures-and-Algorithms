@@ -20,7 +20,7 @@ public:
 
     Stack(int value) : top(new Node(value)), height(1) {}
 
-    ~Stack()
+    ~Stack()    
     {
         while (top)
         {
@@ -102,5 +102,5 @@ std::ostream& operator<<(std::ostream& os, Stack& stackType)
 
 int main()
 {
-    
+
 }
