@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 struct Node
 {
@@ -101,6 +102,40 @@ public:
         return currentNode;
     }
 
+    void BFS()
+    {
+        std::queue<Node*> bfsQueue;
+        bfsQueue.push(root);
+
+        while (bfsQueue.size() != 0)
+        {
+            Node* currentNode{ bfsQueue.front() };
+            bfsQueue.pop();
+            std::cout << currentNode->value << ' ';
+
+            if (currentNode->left)
+            {
+                bfsQueue.push(currentNode->left);
+            }
+            if (currentNode->right)
+            {
+                bfsQueue.push(currentNode->right);
+            }
+        }
+    }
+
+    void DFS(Node* currentNode)
+    {
+        std::cout << currentNode->value << ' ';
+        if (currentNode->left) { DFS(currentNode->left); }
+        if (currentNode->right) { DFS(currentNode->right); }
+    }
+
+    void DFS()
+    {
+        DFS(root);
+    }
+
     void deleteNode(int val) 
     {
         // makes sure if root is deleted  it equals nullpointer (itself)
@@ -110,5 +145,12 @@ public:
 
 int main()
 {   
-    
+    BinaryTree myBT(2);
+    myBT.insert(3);
+    myBT.insert(8);
+    myBT.insert(6);
+    myBT.insert(1);
+    myBT.insert(10);
+    myBT.insert(7);
+    myBT.DFS();
 }
