@@ -46,41 +46,69 @@ public:
         else insert(root, val);
     }
 
+    int minValue(Node* currentNode)
+    {
+        if (currentNode->left == nullptr) return currentNode->value;
+
+        return minValue(currentNode->left);
+    }
+
     Node* deleteNode(Node* currentNode, int val)
     {
+        // if the node to be deleted doesnt exist in the tree we return nullptr
         if (currentNode == nullptr) return nullptr;
 
+        // this block traverses through the tree
         if (currentNode->value > val)
         {
-            currentNode = deleteNode(currentNode->left, val);
+            currentNode->left = deleteNode(currentNode->left, val);
         }
         else if (currentNode->value < val)
         {
-            currentNode = deleteNode(currentNode->right, val);
+            currentNode->right = deleteNode(currentNode->right, val);
         }
+
+        // if the node is found take these steps
         else
         {
-            return nullptr;
+            // account for if there are no other nodes this node points to
+            if (currentNode->left == nullptr && currentNode->right == nullptr)
+            {
+                delete currentNode;
+                return nullptr;
+            }
+            // account for if the node only points to one branch (left or right)
+            else if (currentNode->left == nullptr)
+            {
+                Node* temp{ currentNode->right };
+                delete currentNode;
+                return temp;
+            }
+            else if (currentNode->right == nullptr)
+            {
+                Node* temp{ currentNode->left };
+                delete currentNode;
+                return temp;
+            }
+            // account for if the node points to two branches (replace the current node with the smallest value to the right and then deletes that node from tree)
+            else
+            {
+                int minInSubTree{ minValue(currentNode->right) };
+                currentNode->value = minInSubTree;
+                deleteNode(currentNode->right, minInSubTree);
+            }
         }
         return currentNode;
     }
 
-    Node* deleteNode(int val) 
+    void deleteNode(int val) 
     {
-        Node* currentNode = deleteNode(root, val);
-        return currentNode;
+        // makes sure if root is deleted  it equals nullpointer (itself)
+        root = deleteNode(root, val);
     }
 };
 
 int main()
-{
-    BinaryTree myBT;
-    myBT.insert(2);
-    myBT.insert(3);
-    myBT.insert(89);
-    myBT.insert(4);
-    myBT.insert(6);
-    myBT.insert(1);
-    std::cout << myBT.contains(8);
-    myBT.deleteNode(6);
+{   
+    
 }
