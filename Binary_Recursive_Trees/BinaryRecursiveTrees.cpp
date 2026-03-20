@@ -145,12 +145,5 @@ public:
 
 int main()
 {   
-    BinaryTree myBT(2);
-    myBT.insert(3);
-    myBT.insert(8);
-    myBT.insert(6);
-    myBT.insert(1);
-    myBT.insert(10);
-    myBT.insert(7);
-    myBT.DFS();
+    
 }
