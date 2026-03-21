@@ -25,7 +25,7 @@ void merge(int array[], int leftIndex, int middleIndex, int rightIndex)
         }
         else
         {
-            array[index] = leftArray[j];
+            array[index] = rightArray[j];
             j++;
             index++;
         }
@@ -40,18 +40,29 @@ void merge(int array[], int leftIndex, int middleIndex, int rightIndex)
 
     while (j < rightArraySize)
     {
-        array[index] = leftArray[j];
+        array[index] = rightArray[j];
         j++;
         index++;
     }
 }
 
+void meregeSort(int array[], int leftIndex, int rightIndex)
+{
+    if (leftIndex == rightIndex) return;
+
+    int middleIndex = leftIndex + (rightIndex - leftIndex) / 2;
+    meregeSort(array, leftIndex, middleIndex);
+    meregeSort(array, middleIndex + 1, rightIndex);
+
+    merge(array, leftIndex, middleIndex, rightIndex);
+}
+
 int main()
 {
-    int numberArray[]{1, 3, 4, 6, 7, 9, 2, 4, 5, 6, 7, 8};
-    merge(numberArray, 0, 5, 11);
+    int numberArray[]{1, 6, 4, 6, 7, 9, 2, 4, 1, 6, 7, 8};
+    meregeSort(numberArray, 0, 11);
 
-    for (int i{ 0 }; i < 11; i++)
+    for (int i{ 0 }; i < 12; i++)
     {
         std::cout << numberArray[i] << ' ';
         numberArray[i];
