@@ -27,6 +27,7 @@ public:
 
     void push(int val);
     int at(int index);
+    void changeValueAt(int index, int value);
     bool swap(int index1, int index2);
     void printLinkedList();
     int getSize();
@@ -40,3 +41,5 @@ void bubbleSort(LinkedList& linkedList);
 void selectionSort(LinkedList& linkedList);
 void insertionSort(LinkedList& linkedList);
 
+void merge(LinkedList& linkedList, int leftIndex, int middleIndex, int rightIndex);
+void mergeSort(LinkedList& linkedList, int leftIndex, int rightindex);

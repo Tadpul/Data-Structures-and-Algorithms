@@ -8,97 +8,110 @@ Node::Node(int val) : value(val), next(nullptr) {}
 LinkedList::LinkedList() : size(0), head(nullptr) {}
 
 LinkedList::LinkedList(int val) : size(1)
-    {
-        Node* newNode{ new Node(val) };
-        head = newNode;
-        tail = newNode;
-    }
+{
+    Node* newNode{ new Node(val) };
+    head = newNode;
+    tail = newNode;
+}
 
 LinkedList::LinkedList(std::initializer_list<int> vals) : size(0), head(nullptr), tail(nullptr)
+{
+    for (int val : vals)
     {
-        for (int val : vals)
-        {
-            this->push(val);
-        }
+        this->push(val);
     }
+}
 
 // destructor
 LinkedList::~LinkedList()
+{
+    Node* temp;
+    tail = nullptr;
+    while (head)
     {
-        Node* temp;
-        tail = nullptr;
-        while (head)
-        {
-            temp = head->next;
-            delete head;
-            head = temp;
-        }
+        temp = head->next;
+        delete head;
+        head = temp;
     }
+}
 
 // methods
 void LinkedList::push(int val)
+{
+    Node* newNode{ new Node(val) };
+    if (size == 0)
     {
-        Node* newNode{ new Node(val) };
-        if (size == 0)
-        {
-            head = newNode;
-            tail = newNode;
-        }
-        else
-        {
-            tail->next = newNode;
-            tail = newNode;
-        }
-        size++;
+        head = newNode;
+        tail = newNode;
     }
+    else
+    {
+        tail->next = newNode;
+        tail = newNode;
+    }
+    size++;
+}
 
 int LinkedList::at(int index)
-    {
-        if (index >= 0 && index < size)
-        {
-            Node* temp{ head };
-            for (int i{ 0 }; i < index; i++) temp = temp->next;
-            return temp->value;
-        }
-        return INT_MIN;
-    }
-
-bool LinkedList::swap(int index1, int index2)
-    {
-        if (index1 != index2 && (index1 >= 0 && index1 < size) && (index2 >= 0 && index2 < size))
-        {
-            Node* node1{ head };
-            Node* node2{ head };
-
-            for (int i{ 0 }; i < index1; i++)
-            {
-                node1 = node1->next;
-            }
-
-            for (int i{ 0 }; i < index2; i++)
-            {
-                node2 = node2->next;
-            }
-            
-            int temp{ node1->value };
-            node1->value = node2->value;
-            node2->value = temp;
-            return true;
-        }
-        return false;
-    }
-
-void LinkedList::printLinkedList()
+{
+    if (index >= 0 && index < size)
     {
         Node* temp{ head };
+        for (int i{ 0 }; i < index; i++) temp = temp->next;
+        return temp->value;
+    }
+    return INT_MIN;
+}
 
-        for (int i{ 0 }; i < size; i++)
+void LinkedList::changeValueAt(int index, int value)
+{
+    if (index >= 0 && index < size)
+    {
+        Node* temp{ head };
+        for (int i{ 0 }; i < index; i++)
         {
-            std::cout << temp->value << ' ';
             temp = temp->next;
         }
-        std::cout << '\n';
+        temp->value = value;
     }
+}
+
+bool LinkedList::swap(int index1, int index2)
+{
+    if (index1 != index2 && (index1 >= 0 && index1 < size) && (index2 >= 0 && index2 < size))
+    {
+        Node* node1{ head };
+        Node* node2{ head };
+
+        for (int i{ 0 }; i < index1; i++)
+        {
+            node1 = node1->next;
+        }
+
+        for (int i{ 0 }; i < index2; i++)
+        {
+            node2 = node2->next;
+        }
+        
+        int temp{ node1->value };
+        node1->value = node2->value;
+        node2->value = temp;
+        return true;
+    }
+    return false;
+}
+
+void LinkedList::printLinkedList()
+{
+    Node* temp{ head };
+
+    for (int i{ 0 }; i < size; i++)
+    {
+        std::cout << temp->value << ' ';
+        temp = temp->next;
+    }
+    std::cout << '\n';
+}
 
 int LinkedList::getSize() { return size; }
 
@@ -146,3 +159,72 @@ void insertionSort(LinkedList& linkedList)
     }
 }
 
+void merge(LinkedList& linkedList, int leftIndex, int middleIndex, int rightIndex)
+{
+    LinkedList leftList;
+    LinkedList rightList;
+
+    int leftListSize{ middleIndex - leftIndex + 1 };
+    int rightListSize{ rightIndex - middleIndex };
+    
+    for (int i{ leftIndex }; i <= middleIndex; i++)
+    {
+        leftList.push(linkedList.at(i));
+    }
+
+    for (int j{ middleIndex + 1}; j <= rightIndex; j++)
+    {
+        rightList.push(linkedList.at(j));
+    }
+
+    int i{ 0 };
+    int j{ 0 };
+    int index{ leftIndex };
+    while (i < leftListSize && j < rightListSize)
+    {
+        if (leftList.at(i) < rightList.at(j))
+        {
+            linkedList.changeValueAt(index, leftList.at(i));
+            index++;
+            i++;
+        }
+        else
+        {
+            linkedList.changeValueAt(index, rightList.at(j));
+            index++;
+            j++;
+        }
+    }
+
+    while (i < leftListSize)
+    {
+        linkedList.changeValueAt(index, leftList.at(i));
+        index++;
+        i++;
+    }
+    while (j < rightListSize)
+    {
+        linkedList.changeValueAt(index, rightList.at(j));
+        index++;
+        j++;
+    }
+}
+
+void mergeSort(LinkedList& linkedList, int leftIndex, int rightindex)
+{
+    if (leftIndex == rightindex) return;
+
+    int middleIndex = leftIndex + (rightindex - leftIndex) / 2;
+    mergeSort(linkedList, leftIndex, middleIndex);
+    mergeSort(linkedList, middleIndex + 1, rightindex);
+
+    merge(linkedList, leftIndex, middleIndex, rightindex);
+}
+
+int main()
+{
+    LinkedList myLL({2, 4, 1, 5, 6, 3, 6, 7});
+    mergeSort(myLL, 0, myLL.getSize() - 1);
+
+    myLL.printLinkedList();
+}
