@@ -220,11 +220,3 @@ void mergeSort(LinkedList& linkedList, int leftIndex, int rightindex)
 
     merge(linkedList, leftIndex, middleIndex, rightindex);
 }
-
-int main()
-{
-    LinkedList myLL({2, 4, 1, 5, 6, 3, 6, 7});
-    mergeSort(myLL, 0, myLL.getSize() - 1);
-
-    myLL.printLinkedList();
-}

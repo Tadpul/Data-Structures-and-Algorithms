@@ -33,10 +33,8 @@ public:
     int getSize();
 };
 
-// operator overload
 std::ostream& operator<<(std::ostream& os, LinkedList& linkedList);
 
-// sorting algorithms
 void bubbleSort(LinkedList& linkedList);
 void selectionSort(LinkedList& linkedList);
 void insertionSort(LinkedList& linkedList);
