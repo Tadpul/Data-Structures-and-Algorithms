@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Sorts.h"
 
 void bubbleSort(int numberArray[], int size)
 {
@@ -21,7 +22,7 @@ void selectionSort(int numberArray[], int size)
     for (int i{ 0 }; i < size - 1; i++)
     {
         int minNumberIndex{ i }; 
-        for (int j{ i + 1 }; j < size; j++) { if (numberArray[i] > numberArray[j]) minNumberIndex = j; }
+        for (int j{ i + 1 }; j < size; j++) { if (numberArray[minNumberIndex] > numberArray[j]) minNumberIndex = j; }
 
         if (numberArray[i] > numberArray[minNumberIndex])
         {
@@ -43,15 +44,4 @@ void insertSort(int numberArray[], int size)
             numberArray[j] = temp;
         }
     }
-}
-
-int main()
-{
-    int sortedList[] = {2, 1, 3, 5, 1};
-    insertSort(sortedList, 5);
-    for (int number : sortedList)
-    {
-        std::cout << number << ' ';
-    }
-    std::cout << '\n';
 }

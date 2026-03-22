@@ -1,96 +1,80 @@
+#include "Queues.h"
 #include <iostream>
 #include <climits>
 
-struct Node
+// node constructor
+Node::Node(int val) : value(val), next(nullptr) {} 
+
+// queue constructor
+Queue::Queue(int val)
+    : length(1) 
 {
-public:
-    int value;
-    Node* next;
+    Node* newNode{ new Node(val) };
+    first = newNode;
+    last = newNode;
+}
 
-    Node(int val) : value(val), next(nullptr) {} 
-};
-
-class Queue
+// queue destructor
+Queue::~Queue()
 {
-private:
-    Node* first;
-    Node* last;
-    int length;
+    Node* temp;
 
-public:
-    Queue(int val)
-        : length(1) 
+    while (first)
     {
-        Node* newNode{ new Node(val) };
+        temp = first;
+        first = temp->next;
+        delete temp;
+    }
+}
+
+// queue member functions
+void Queue::enqueue(int val)
+{
+    Node* newNode{ new Node(val) };
+    if (first == nullptr)
+    {
         first = newNode;
+    }
+    else
+    {
+        last->next = newNode;
         last = newNode;
     }
+    last = newNode;
+    length++;
+}
 
-    ~Queue()
-    {
-        Node* temp;
-
-        while (first)
-        {
-            temp = first;
-            first = temp->next;
-            delete temp;
-        }
-    }
-
-    void enqueue(int val)
-    {
-        Node* newNode{ new Node(val) };
-        if (first == nullptr)
-        {
-            first = newNode;
-        }
-        else
-        {
-            last->next = newNode;
-            last = newNode;
-        }
-        last = newNode;
-        length++;
-    }
-
-    int dequeue()
-    {
-        if (first == nullptr)
-        {
-            return INT_MIN;
-        }
-
-        int dequeuedValue = first->value;
-        if(length == 1)
-        {
-            delete first;
-            first = nullptr;
-            last = nullptr;
-        }
-        else
-        {
-            Node* temp = first->next;
-            delete first;
-            first = temp;
-        }
-        length--;
-        return dequeuedValue;
-    }
-
-    void printQueue()
-    {
-        Node* temp{ first };
-        while (temp)
-        {
-            std::cout << temp->value;
-            temp = temp->next;
-        }
-        std::cout << '\n';
-    }
-};
-
-int main()
+int Queue::dequeue()
 {
+    if (first == nullptr)
+    {
+        return INT_MIN;
+    }
 
+    int dequeuedValue = first->value;
+    if(length == 1)
+    {
+        delete first;
+        first = nullptr;
+        last = nullptr;
+    }
+    else
+    {
+        Node* temp = first->next;
+        delete first;
+        first = temp;
+    }
+    length--;
+    return dequeuedValue;
+}
+
+void Queue::printQueue()
+{
+    Node* temp{ first };
+    while (temp)
+    {
+        std::cout << temp->value;
+        temp = temp->next;
+    }
+    std::cout << '\n';
 }

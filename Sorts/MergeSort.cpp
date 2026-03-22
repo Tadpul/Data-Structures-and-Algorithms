@@ -1,3 +1,4 @@
+#include "MergeSort.h"
 #include <iostream>
 #include <vector>
 
@@ -55,16 +56,4 @@ void meregeSort(int array[], int leftIndex, int rightIndex)
     meregeSort(array, middleIndex + 1, rightIndex);
 
     merge(array, leftIndex, middleIndex, rightIndex);
-}
-
-int main()
-{
-    int numberArray[]{1, 6, 4, 6, 7, 9, 2, 4, 1, 6, 7, 8};
-    meregeSort(numberArray, 0, 11);
-
-    for (int i{ 0 }; i < 12; i++)
-    {
-        std::cout << numberArray[i] << ' ';
-        numberArray[i];
-    }
 }

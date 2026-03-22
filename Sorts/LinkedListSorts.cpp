@@ -1,33 +1,20 @@
-#include <iostream>
-#include <initializer_list>
+#include "LinkedListSorts.h"
+#include <climits>
 
-struct Node
-{
-public:
-    int value;
-    Node* next;
+// node constructor
+Node::Node(int val) : value(val), next(nullptr) {}
 
-    Node(int val) : value(val), next(nullptr) {}
-};
+// linked list constructor
+LinkedList::LinkedList() : size(0), head(nullptr) {}
 
-class LinkedList
-{
-private:
-    int size;
-    Node* head;
-    Node* tail;
-
-public:
-    LinkedList() : size(0), head(nullptr) {}
-
-    LinkedList(int val) : size(1)
+LinkedList::LinkedList(int val) : size(1)
     {
         Node* newNode{ new Node(val) };
         head = newNode;
         tail = newNode;
     }
 
-    LinkedList(std::initializer_list<int> vals) : size(0), head(nullptr), tail(nullptr)
+LinkedList::LinkedList(std::initializer_list<int> vals) : size(0), head(nullptr), tail(nullptr)
     {
         for (int val : vals)
         {
@@ -35,7 +22,8 @@ public:
         }
     }
 
-    ~LinkedList()
+// destructor
+LinkedList::~LinkedList()
     {
         Node* temp;
         tail = nullptr;
@@ -47,7 +35,8 @@ public:
         }
     }
 
-    void push(int val)
+// methods
+void LinkedList::push(int val)
     {
         Node* newNode{ new Node(val) };
         if (size == 0)
@@ -63,7 +52,7 @@ public:
         size++;
     }
 
-    int at(int index)
+int LinkedList::at(int index)
     {
         if (index >= 0 && index < size)
         {
@@ -74,7 +63,7 @@ public:
         return INT_MIN;
     }
 
-    bool swap(int index1, int index2)
+bool LinkedList::swap(int index1, int index2)
     {
         if (index1 != index2 && (index1 >= 0 && index1 < size) && (index2 >= 0 && index2 < size))
         {
@@ -99,7 +88,7 @@ public:
         return false;
     }
 
-    void printLinkedList()
+void LinkedList::printLinkedList()
     {
         Node* temp{ head };
 
@@ -111,15 +100,16 @@ public:
         std::cout << '\n';
     }
 
-    int getSize() { return size; }
-};
+int LinkedList::getSize() { return size; }
 
+// operator overload
 std::ostream& operator<<(std::ostream& os, LinkedList& linkedList)
 {
     linkedList.printLinkedList();
     return os;
 }
 
+// sorting algorithms
 void bubbleSort(LinkedList& linkedList)
 {
     for (int i{ 0 }; i < linkedList.getSize() - 1; i++)
@@ -156,9 +146,3 @@ void insertionSort(LinkedList& linkedList)
     }
 }
 
-int main()
-{
-    LinkedList myLL({1, 4, 2, 5, 6, 7});
-    insertionSort(myLL);
-    std::cout << myLL;
-}

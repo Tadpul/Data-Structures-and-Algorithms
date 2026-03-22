@@ -1,114 +1,100 @@
-#include <iostream>
-#include <string>
-#include <vector>
+#include "HashTables.h"
 #include <unordered_map>
 #include <stack>
 #include <unordered_set>
 
-class Node
+// node constructor
+Node::Node(std::string stringKey, int val) : key(stringKey), value(val), next(nullptr) {}  
+
+// hash table constructor
+HashTable::HashTable()
 {
-public:
-    std::string key;
-    int value;
-    Node* next;
+    for (int i{ 0 }; i < SIZE; i++)
+    {
+        dataMap[i] = nullptr;
+    }
+}
 
-    Node(std::string stringKey, int val) : key(stringKey), value(val), next(nullptr) {}  
-};
-
-class HashTable
+// hash table member functions
+int HashTable::hash(std::string key)
 {
-private:
-    static const int SIZE{ 7 };
-    Node* dataMap[SIZE];
-
-public:
-    HashTable()
+    int hash{ 0 };
+    for (char letter : key)
     {
-        for (int i{ 0 }; i < SIZE; i++)
+        int asciiValue{ int(letter) };
+        hash = (hash + int(asciiValue) * 23) % SIZE;
+    }
+    return hash;
+}
+
+void HashTable::setNode(std::string key, int val)
+{
+    Node* newNode(new Node(key, val));
+    int index{ hash(key) };
+
+    if (dataMap[index] == nullptr) dataMap[index] = newNode;
+    else
+    {
+        Node* temp{ dataMap[index] };
+        while (temp->next != nullptr)
         {
-            dataMap[i] = nullptr;
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+int HashTable::getValue(std::string key) 
+{
+    int index = hash(key);
+    if (dataMap[index])
+    {
+        Node* temp{dataMap[index]};
+        while (temp)
+        {
+            if (temp->key == key) return temp->value;
+            temp = temp->next;
         }
     }
+    return INT_MIN;
+}
 
-    void printHashTable()
+std::vector<std::string> HashTable::keys()
+{
+    std::vector<std::string> keys;
+
+    for (Node* node : dataMap)
     {
-        for (int i{ 0 }; i < SIZE; i++)
+        Node* temp{ node }; 
+        while (temp) 
         {
-            if (dataMap[i])
-            {
-                Node* temp = dataMap[i];
-                std::cout << i << ':';
-                while (temp)
-                {
-                    std::cout << " { " << temp->key << ", " << temp->value << " }";
-                    temp = temp->next;
-                }
-                std::cout << '\n';
-            }
-            else std::cout << i << ": empty\n"; 
+            keys.push_back(temp->key);
+            temp = temp->next;
         }
     }
+    return keys;
+}
 
-    int hash(std::string key)
+void HashTable::printHashTable()
+{
+    for (int i{ 0 }; i < SIZE; i++)
     {
-        int hash{ 0 };
-        for (char letter : key)
+        if (dataMap[i])
         {
-            int asciiValue{ int(letter) };
-            hash = (hash + int(asciiValue) * 23) % SIZE;
-        }
-        return hash;
-    }
-
-    void setNode(std::string key, int val)
-    {
-        Node* newNode(new Node(key, val));
-        int index{ hash(key) };
-
-        if (dataMap[index] == nullptr) dataMap[index] = newNode;
-        else
-        {
-            Node* temp{ dataMap[index] };
-            while (temp->next != nullptr)
-            {
-                temp = temp->next;
-            }
-            temp->next = newNode;
-        }
-    }
-
-    int getValue(std::string key) 
-    {
-        int index = hash(key);
-        if (dataMap[index])
-        {
-            Node* temp{dataMap[index]};
+            Node* temp = dataMap[i];
+            std::cout << i << ':';
             while (temp)
             {
-                if (temp->key == key) return temp->value;
+                std::cout << " { " << temp->key << ", " << temp->value << " }";
                 temp = temp->next;
             }
+            std::cout << '\n';
         }
-        return INT_MIN;
+        else std::cout << i << ": empty\n"; 
     }
+}
 
-    std::vector<std::string> keys()
-    {
-        std::vector<std::string> keys;
-
-        for (Node* node : dataMap)
-        {
-            Node* temp{ node }; 
-            while (temp) 
-            {
-                keys.push_back(temp->key);
-                temp = temp->next;
-            }
-        }
-        return keys;
-    }
-};
-
+// other hash table related functions
 bool itemInCommon(std::vector<int> vector1, std::vector<int> vector2)
 {
     std::unordered_map<int, bool> cppHT;
@@ -240,32 +226,6 @@ std::vector<int> twoSum(const std::vector<int>& numbers, int target)
 }
 
 std::vector<int> subarraySum(std::vector<int> nums, int target)
-/*
-{
-    int currentSum{ nums[0] };
-
-    int start{ 0 };
-    int end{ 0 };
-
-    while (currentSum != target && end < nums.size())
-    {
-        if (currentSum < target) 
-        {
-            end++;
-            if (end < nums.size()) currentSum += nums[end];
-        }
-        else
-        {
-            currentSum -= nums[start];
-            start++;  
-        }
-    }
-
-    std::cout << nums[start] << nums[end] << currentSum << '\n';
-    if (currentSum == target) { return {start, end}; }
-    return {};
-}
-*/
 {
     std::unordered_map<int, int> sumMap;
     int currentSum{ 0 };
@@ -325,9 +285,4 @@ int longestConsecutiveSequence(const std::vector<int>& nums)
         }
     }
     return longest;
-}
-
-int main()
-{
-
 }
