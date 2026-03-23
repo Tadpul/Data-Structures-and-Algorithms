@@ -431,4 +431,3 @@ void LinkedList::printList()
 void LinkedList::getHead() { std::cout << head->value << '\n'; }
 void LinkedList::getTail() { std::cout << tail->value << '\n'; }
 void LinkedList::getLength() { std::cout << numOfNodes << '\n'; }
-
